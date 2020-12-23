@@ -18,8 +18,6 @@ def get_paths(listnodes):
 
 def generate_nodes(num):
     nodes = []
-    boundaryX = 150
-    boundaryY = 50
     for i in range(num + 1):
         x = random.randint(0 + (boundaryX - 50), res[0] - boundaryX)
         y = random.randint(0 + boundaryY, res[1] - boundaryY)
@@ -39,15 +37,22 @@ def main():
     right = False
     down = False
     up = False
+    lmb = False
     nodelist = generate_nodes(max_nodes)
     get_paths(nodelist)
     curr_node = 0
-
+    mx, my = [0, 0]
     while True:
         screen.fill((255, 255, 255))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 sys.exit()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == pygame.BUTTON_LEFT:
+                    lmb = True
+            if e.type == pygame.MOUSEBUTTONUP:
+                if e.button == pygame.BUTTON_LEFT:
+                    lmb = False
             if e.type == pygame.KEYUP:
                 if e.key == pygame.K_LEFT:
                     left = True
@@ -62,14 +67,24 @@ def main():
 
         show_colors(nodelist, screen)
         fix_spacing(nodelist)
+        mx, my = pygame.mouse.get_pos()
 
         for node in nodelist:
             for path in node.paths:
                 pygame.draw.line(screen, (0, 0, 0), node.pos, path.pos)
 
         for node in nodelist:
-            pygame.draw.circle(screen, colors[node.color], node.pos, node_radius)
+            br = pygame.draw.circle(screen, colors[node.color], node.pos, node_radius)
             light_tts(f"{node.index}", node.x, node.y, screen, size=15, color=(255, 255, 255))
+
+            if br.collidepoint(mx, my) and lmb:
+                node.clicked = True
+            if node.clicked and not lmb:
+                node.clicked = False
+
+            if node.clicked:
+                node.x = mx
+                node.y = my
 
         if down:
             del nodelist

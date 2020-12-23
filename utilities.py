@@ -15,8 +15,9 @@ def light_tts(text, x, y, surf, size=10, color=(255, 255, 255)):
 def show_colors(nodes, surf):
     regionX = res[0] * 0.85
     regionY = res[1] * 0.1
-    light_tts("Colours", 55 + regionX, regionY, surf, size=30, color=(0, 0, 0))
+    light_tts(f"Colours: {len(colors) - 2}", 65 + regionX, regionY, surf, size=30, color=(0, 0, 0))
     pygame.draw.line(surf, (0, 0, 0), (regionX, -10), (regionX, res[1]), 2)
+    
     for i, n in enumerate(nodes):
         pygame.draw.rect(surf, (0, 0, 0), pygame.Rect(regionX + 5, 30 + regionY + i*20, 15, 15))
         light_tts(f"{n.index}", 12 + regionX, 37 + regionY + i * 20, surf, size=15, color=(255, 255, 255))
@@ -41,6 +42,6 @@ def fix_spacing(nodelist):
             forceY = dy / dist
 
             if node is not node2 and dist < (node_radius + 70):
-                node.x -= int(node.repulsion * (forceX * 0.3))
-                node.y -= int(node.repulsion * (forceY * 0.3))
+                node.x -= int(node.repulsion * (forceX ))
+                node.y -= int(node.repulsion * (forceY ))
         node.pos = (node.x, node.y)

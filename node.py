@@ -12,6 +12,7 @@ class Node:
         self.paths = []
         self.color = 'null'
         self.repulsion = 5
+        self.clicked = False
 
     def assign_color(self):
         for c in colors:
@@ -20,7 +21,7 @@ class Node:
                 self.block_color()
                 break
 
-        if self.color is 'null':
+        if self.color == 'null':
             self.color = 'OOB'
 
     def block_color(self):
